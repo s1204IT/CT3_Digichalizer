@@ -15,6 +15,7 @@ public class Reboot extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startActivity(new Intent(Intent.ACTION_MAIN).setClassName(getPackageName(), getPackageName() + ".BackNova"));
         bindService(new Intent("jp.co.benesse.dcha.dchaservice.DchaService").setPackage("jp.co.benesse.dcha.dchaservice"), new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -30,6 +31,5 @@ public class Reboot extends Activity {
                 unbindService(this);
             }
         }, 1);
-        finishAndRemoveTask();
     }
 }
