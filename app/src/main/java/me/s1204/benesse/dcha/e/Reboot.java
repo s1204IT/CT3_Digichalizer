@@ -2,11 +2,13 @@ package me.s1204.benesse.dcha.e;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.widget.Toast;
 
 import jp.co.benesse.dcha.dchaservice.IDchaService;
 
@@ -15,6 +17,7 @@ public class Reboot extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Toast.makeText(this, "チャレンジパッドを再起動します...", Toast.LENGTH_LONG).show();
         startActivity(new Intent(Intent.ACTION_MAIN).setClassName(getPackageName(), getPackageName() + ".BackNova"));
         bindService(new Intent("jp.co.benesse.dcha.dchaservice.DchaService").setPackage("jp.co.benesse.dcha.dchaservice"), new ServiceConnection() {
             @Override
@@ -30,6 +33,6 @@ public class Reboot extends Activity {
             public void onServiceDisconnected(ComponentName componentName) {
                 unbindService(this);
             }
-        }, 1);
+        }, Context.BIND_AUTO_CREATE);
     }
 }

@@ -10,8 +10,8 @@ android {
         applicationId 'me.s1204.benesse.dcha.e'
         minSdk 24
         targetSdk 22
-        versionCode 2
-        versionName "1.1"
+        versionCode 3
+        versionName "1.2"
     }
 
     buildTypes {

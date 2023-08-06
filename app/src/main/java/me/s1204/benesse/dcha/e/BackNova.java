@@ -2,12 +2,14 @@ package me.s1204.benesse.dcha.e;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.provider.Settings.Global;
+import android.widget.Toast;
 
 import jp.co.benesse.dcha.dchaservice.IDchaService;
 import jp.co.benesse.dcha.dchautilservice.IDchaUtilService;
@@ -32,7 +34,7 @@ public class BackNova extends Activity {
             public void onServiceDisconnected(ComponentName componentName) {
                 unbindService(this);
             }
-        }, 1);
+        }, Context.BIND_AUTO_CREATE);
         Global.putInt(getContentResolver(), Global.ADB_ENABLED, 1);
         bindService(new Intent("jp.co.benesse.dcha.dchaservice.DchaService").setPackage("jp.co.benesse.dcha.dchaservice"), new ServiceConnection() {
             @Override
@@ -52,8 +54,9 @@ public class BackNova extends Activity {
             public void onServiceDisconnected(ComponentName componentName) {
                 unbindService(this);
             }
-        }, 1);
+        }, Context.BIND_AUTO_CREATE);
         finishAndRemoveTask();
+        Toast.makeText(this, "Nova Launcher を起動しました", Toast.LENGTH_LONG).show();
         startActivity(new Intent("android.intent.action.MAIN").setClassName("com.teslacoilsw.launcher", "com.teslacoilsw.launcher.NovaLauncher"));
     }
 }
