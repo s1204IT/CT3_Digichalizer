@@ -1,6 +1,7 @@
 package me.s1204.benesse.dcha.e;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -11,31 +12,24 @@ import android.os.RemoteException;
 import android.provider.Settings.Global;
 import android.widget.Toast;
 
+import android.os.BenesseExtension;
 import jp.co.benesse.dcha.dchaservice.IDchaService;
-import jp.co.benesse.dcha.dchautilservice.IDchaUtilService;
 
 public class BackNova extends Activity {
     IDchaService mDchaService;
-    IDchaUtilService mUtilService;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bindService(new Intent("jp.co.benesse.dcha.dchautilservice.DchaUtilService").setPackage("jp.co.benesse.dcha.dchautilservice"), new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                mUtilService = IDchaUtilService.Stub.asInterface(iBinder);
-                try {
-                    mUtilService.setForcedDisplaySize(1280, 800);
-                } catch (RemoteException ignored) {
-                }
-                unbindService(this);
-            }
-            @Override
-            public void onServiceDisconnected(ComponentName componentName) {
-                unbindService(this);
-            }
-        }, Context.BIND_AUTO_CREATE);
-        Global.putInt(getContentResolver(), Global.ADB_ENABLED, 1);
+        try {
+            //noinspection ResultOfMethodCallIgnored
+            BenesseExtension.setForcedDisplaySize(1280, 800);
+            Global.putInt(getContentResolver(), Global.ADB_ENABLED, 1);
+        } catch (SecurityException e) {
+            //noinspection CallToPrintStackTrace
+            e.printStackTrace();
+            Toast.makeText(this, "WRITE_SECURE_SETTINGS を付与してください", Toast.LENGTH_LONG).show();
+            finish();
+        }
         bindService(new Intent("jp.co.benesse.dcha.dchaservice.DchaService").setPackage("jp.co.benesse.dcha.dchaservice"), new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -56,7 +50,14 @@ public class BackNova extends Activity {
             }
         }, Context.BIND_AUTO_CREATE);
         finishAndRemoveTask();
-        Toast.makeText(this, "Nova Launcher を起動しました", Toast.LENGTH_LONG).show();
-        startActivity(new Intent("android.intent.action.MAIN").setClassName("com.teslacoilsw.launcher", "com.teslacoilsw.launcher.NovaLauncher"));
+        Toast.makeText(this, "Nova Launcher を起動しています...", Toast.LENGTH_SHORT).show();
+        try {
+            startActivity(new Intent("android.intent.action.MAIN").setClassName("com.teslacoilsw.launcher", "com.teslacoilsw.launcher.NovaLauncher"));
+        } catch (ActivityNotFoundException e) {
+            //noinspection CallToPrintStackTrace
+            e.printStackTrace();
+            Toast.makeText(this, "Nova Launcher を起動できませんでした", Toast.LENGTH_LONG).show();
+        }
+        finish();
     }
 }

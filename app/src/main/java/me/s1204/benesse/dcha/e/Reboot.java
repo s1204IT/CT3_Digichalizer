@@ -34,5 +34,6 @@ public class Reboot extends Activity {
                 unbindService(this);
             }
         }, Context.BIND_AUTO_CREATE);
+        finish();
     }
 }

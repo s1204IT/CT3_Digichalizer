@@ -3,31 +3,29 @@ plugins {
 }
 
 android {
-    compileSdk 28
+    //noinspection GradleDependency
+    compileSdk 33
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId 'me.s1204.benesse.dcha.e'
         minSdk 24
+        //noinspection ExpiredTargetSdkVersion
         targetSdk 22
-        versionCode 3
-        versionName "1.2"
+        versionCode 4
+        versionName "2.0"
+        proguardFiles += 'proguard-rules.pro'
+        multiDexEnabled false
     }
 
     buildTypes {
-        debug {
-            debuggable false
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
 dependencies {
     implementation files('libs/DchaService.jar')
+    compileOnly files('libs/BenesseExtension.jar')
 }

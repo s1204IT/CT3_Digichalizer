@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.s1204.benesse.dcha.e">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="me.s1204.benesse.dcha.e"
+    android:sharedUserId="me.s1204.benesse.shared">
 
-    <uses-sdk android:maxSdkVersion="28" />
-    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="jp.co.benesse.dcha.permission.ACCESS_SYSTEM" />
 
     <application
         android:icon="@android:mipmap/sym_def_app_icon"
-        android:label="CT3用 Digichalizer">
+        android:label="CT3 Digichalizer"
+        android:theme="@android:style/Theme.NoDisplay">
 
         <activity
             android:name=".InitDcha"
+            android:excludeFromRecents="true"
             android:exported="true"
-            android:label="Digichalizing">
+            android:label="Digichalizing"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -23,8 +28,10 @@
 
         <activity
             android:name=".BackNova"
+            android:excludeFromRecents="true"
             android:exported="true"
-            android:label="Nova Launcher">
+            android:label="Nova Launcher"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
@@ -34,8 +41,10 @@
 
         <activity
             android:name=".Reboot"
+            android:excludeFromRecents="true"
             android:exported="true"
-            android:label="Reboot">
+            android:label="Reboot"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
