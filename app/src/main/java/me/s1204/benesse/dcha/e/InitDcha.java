@@ -19,7 +19,7 @@ import jp.co.benesse.dcha.dchautilservice.IDchaUtilService;
 
 public class InitDcha extends Activity {
     protected static final String ACCESS_SYSTEM = "jp.co.benesse.dcha.permission.ACCESS_SYSTEM";
-    protected static final String DCHA_PFX = "jp.co.benesse.dcha.";
+    protected static final String DCHA_PFX = "jp.co.benesse.dcha";
     protected static final String DCHA_PKG = DCHA_PFX + ".dchaservice";
     protected static final String DCHA_SRV = DCHA_PKG + ".DchaService";
     protected static final String UTIL_PKG = DCHA_PFX + ".dchautilservice";
@@ -56,6 +56,7 @@ public class InitDcha extends Activity {
             }
         }, Context.BIND_AUTO_CREATE)) {
             makeText(this, R.string.fail_util_connect);
+            finish();
             return;
         }
 
@@ -79,6 +80,7 @@ public class InitDcha extends Activity {
             }
         }, Context.BIND_AUTO_CREATE)) {
             makeText(this, R.string.fail_dcha_connect);
+            finish();
             return;
         }
 
@@ -91,6 +93,7 @@ public class InitDcha extends Activity {
             e.printStackTrace();
             makeText(this, R.string.fail_dcha);
         }
+        finish();
     }
 
     protected static boolean checkPermission(Context context) {

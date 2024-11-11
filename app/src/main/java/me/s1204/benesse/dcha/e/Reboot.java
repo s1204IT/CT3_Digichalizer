@@ -14,7 +14,6 @@ import jp.co.benesse.dcha.dchaservice.IDchaService;
 import static me.s1204.benesse.dcha.e.InitDcha.*;
 
 public class Reboot extends Activity {
-    IDchaService mDchaService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,12 +25,12 @@ public class Reboot extends Activity {
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                 mDchaService = IDchaService.Stub.asInterface(iBinder);
                 makeText(getApplicationContext(), R.string.reboot_message);
+                startActivity(new Intent(Intent.ACTION_MAIN).setClassName(getPackageName(), getPackageName() + BACK_NOVA));
                 try {
                     mDchaService.rebootPad(0, null);
                 } catch (RemoteException ignored) {
                 }
                 unbindService(this);
-                startActivity(new Intent(Intent.ACTION_MAIN).setClassName(getPackageName(), getPackageName() + BACK_NOVA));
             }
             @Override
             public void onServiceDisconnected(ComponentName componentName) {

@@ -38,6 +38,7 @@ public class BackNova extends Activity {
             }
         }, Context.BIND_AUTO_CREATE)) {
             makeText(this, R.string.fail_util_connect);
+            finish();
             return;
         }
 
@@ -61,6 +62,7 @@ public class BackNova extends Activity {
             }
         }, Context.BIND_AUTO_CREATE)) {
             makeText(this, R.string.fail_dcha_connect);
+            finish();
             return;
         }
 
@@ -73,6 +75,7 @@ public class BackNova extends Activity {
             e.printStackTrace();
             makeText(this, R.string.fail_nova);
         }
+        finish();
     }
 
 }
