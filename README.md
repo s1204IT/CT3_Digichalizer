@@ -2,22 +2,29 @@
 
 チャレンジタッチ契約者用改造補助アプリ
 
-[![Build](https://github.com/s1204IT/CT3_Digichalizer/actions/workflows/build.yml/badge.svg?branch=master&event=push)](https://github.com/s1204IT/CT3_Digichalizer/actions/workflows/build.yml)
-
 ---
 
 ### インストール
 
-1. [**ここ**](https://github.com/s1204IT/CT3_Digichalizer/releases/latest/download/CT3_Digichalizer.apk)からAPKをダウンロード
+1. [**ここ**](https://github.com/s1204IT/CT3-Digichalizer/releases/latest/)からAPKをダウンロード
 2. ADB経由でインストール
    ```
-   adb install -i jp.co.benesse.dcha.dchaservice -r .\CT3_Digichalizer.apk
+   adb install -r -g -i jp.co.benesse.dcha.dchaservice CT3-Digichalizer.apk
    ```
 
 ---
 
-#### 権限の付与
-```
-adb shell pm grant me.s1204.benesse.dcha.e android.permission.WRITE_SECURE_SETTINGS
-```
-これを行わないと動作しません｡
+### 最初の設定
+
+ユーザー補助を有効にしてください。  
+**Digichalizing** (**InitDcha**) を開くと、設定画面が立ち上がります。
+
+### Nova Launcher の起動
+
+**ホームボタン** と **音量－ボタン** を同時押します。  
+もしくは、**BackNova** を開きます。
+
+### 学習環境への戻り方
+
+**ホームボタン** と **音量＋ボタン** を同時押します。  
+もしくは、**Digichalizing** (**InitDcha**) を開きます。

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">CT3 Digichalizer</string>
+    <string name="app_description">チャレンジタッチ契約者向け学習環境補助アプリ</string>
+    <string name="nova_launcher">Nova Launcher</string>
+    <string name="nova_description">Nova Launcher を起動します</string>
+    <string name="start_nova">Nova Launcher を起動しています...</string>
+    <string name="fail_nova">Nova Launcher を起動できませんでした</string>
+    <string name="dcha">Digichalizing</string>
+    <string name="dcha_description">学習環境に再設定します</string>
+    <string name="fail_dcha_connect">DchaService に接続できませんでした</string>
+    <string name="fail_util_connect">DchaUtilService に接続できませんでした</string>
+    <string name="start_dcha">デジチャレモード を起動しています...</string>
+    <string name="fail_dcha">ホームランチャーを起動できませんでした</string>
+    <string name="reboot">再起動</string>
+    <string name="reboot_description">端末を再起動します</string>
+    <string name="reboot_message">チャレンジパッドを再起動します...</string>
+    <string name="service_name">Nova Launcher 起動サービス</string>
+    <string name="service_description">ホームボタンと音量－ボタンを同時に押すと Nova Launcher を起動できます\nまた、ホームボタンと音量＋ボタンを同時に押すと学習環境を起動できます</string>
+    <string name="enable_service">ユーザー補助を有効にしてください</string>
+    <string name="grant_permission">権限を許可してください</string>
+</resources>

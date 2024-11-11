@@ -8,32 +8,38 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.widget.Toast;
 
 import jp.co.benesse.dcha.dchaservice.IDchaService;
 
+import static me.s1204.benesse.dcha.e.InitDcha.*;
+
 public class Reboot extends Activity {
     IDchaService mDchaService;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toast.makeText(this, "チャレンジパッドを再起動します...", Toast.LENGTH_LONG).show();
-        startActivity(new Intent(Intent.ACTION_MAIN).setClassName(getPackageName(), getPackageName() + ".BackNova"));
-        bindService(new Intent("jp.co.benesse.dcha.dchaservice.DchaService").setPackage("jp.co.benesse.dcha.dchaservice"), new ServiceConnection() {
+        InitDcha.checkPermission(this);
+
+        if (!bindService(new Intent(DCHA_SRV).setPackage(DCHA_PKG), new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                 mDchaService = IDchaService.Stub.asInterface(iBinder);
+                makeText(getApplicationContext(), R.string.reboot_message);
                 try {
                     mDchaService.rebootPad(0, null);
                 } catch (RemoteException ignored) {
                 }
                 unbindService(this);
+                startActivity(new Intent(Intent.ACTION_MAIN).setClassName(getPackageName(), getPackageName() + BACK_NOVA));
             }
             @Override
             public void onServiceDisconnected(ComponentName componentName) {
                 unbindService(this);
             }
-        }, Context.BIND_AUTO_CREATE);
+        }, Context.BIND_AUTO_CREATE)) {
+            makeText(this, R.string.fail_dcha_connect);
+        }
         finish();
     }
 }

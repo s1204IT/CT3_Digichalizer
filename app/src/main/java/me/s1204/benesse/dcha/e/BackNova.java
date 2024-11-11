@@ -9,36 +9,47 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.provider.Settings.Global;
-import android.widget.Toast;
 
-import android.os.BenesseExtension;
 import jp.co.benesse.dcha.dchaservice.IDchaService;
+import jp.co.benesse.dcha.dchautilservice.IDchaUtilService;
+
+import static me.s1204.benesse.dcha.e.InitDcha.*;
 
 public class BackNova extends Activity {
-    IDchaService mDchaService;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            //noinspection ResultOfMethodCallIgnored
-            BenesseExtension.setForcedDisplaySize(1280, 800);
-            Global.putInt(getContentResolver(), Global.ADB_ENABLED, 1);
-        } catch (SecurityException e) {
-            //noinspection CallToPrintStackTrace
-            e.printStackTrace();
-            Toast.makeText(this, "WRITE_SECURE_SETTINGS を付与してください", Toast.LENGTH_LONG).show();
-            finish();
+        if (InitDcha.checkPermission(this)) return;
+
+        if (!bindService(new Intent(UTIL_SRV).setPackage(UTIL_PKG), new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                mUtilService = IDchaUtilService.Stub.asInterface(iBinder);
+                try {
+                    mUtilService.setForcedDisplaySize(1280, 800);
+                } catch (RemoteException ignored) {
+                }
+                unbindService(this);
+            }
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {
+                unbindService(this);
+            }
+        }, Context.BIND_AUTO_CREATE)) {
+            makeText(this, R.string.fail_util_connect);
+            return;
         }
-        bindService(new Intent("jp.co.benesse.dcha.dchaservice.DchaService").setPackage("jp.co.benesse.dcha.dchaservice"), new ServiceConnection() {
+
+        if (!bindService(new Intent(DCHA_SRV).setPackage(DCHA_PKG), new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                 mDchaService = IDchaService.Stub.asInterface(iBinder);
                 try {
                     mDchaService.setSetupStatus(0);
                     mDchaService.hideNavigationBar(false);
-                    mDchaService.clearDefaultPreferredApp("jp.co.benesse.touch.allgrade.b003.touchhomelauncher");
-                    mDchaService.setDefaultPreferredHomeApp("com.teslacoilsw.launcher");
+                    mDchaService.clearDefaultPreferredApp(TouchHomeLauncher);
+                    mDchaService.setDefaultPreferredHomeApp(NOVA_PKG);
                     mDchaService.removeTask(null);
                 } catch (RemoteException ignored) {
                 }
@@ -48,16 +59,20 @@ public class BackNova extends Activity {
             public void onServiceDisconnected(ComponentName componentName) {
                 unbindService(this);
             }
-        }, Context.BIND_AUTO_CREATE);
-        finishAndRemoveTask();
-        Toast.makeText(this, "Nova Launcher を起動しています...", Toast.LENGTH_SHORT).show();
+        }, Context.BIND_AUTO_CREATE)) {
+            makeText(this, R.string.fail_dcha_connect);
+            return;
+        }
+
+        makeText(this, R.string.start_nova);
+
         try {
-            startActivity(new Intent("android.intent.action.MAIN").setClassName("com.teslacoilsw.launcher", "com.teslacoilsw.launcher.NovaLauncher"));
+            startActivity(new Intent(Intent.ACTION_MAIN).setClassName(NOVA_PKG, NovaLauncher));
         } catch (ActivityNotFoundException e) {
             //noinspection CallToPrintStackTrace
             e.printStackTrace();
-            Toast.makeText(this, "Nova Launcher を起動できませんでした", Toast.LENGTH_LONG).show();
+            makeText(this, R.string.fail_nova);
         }
-        finish();
     }
+
 }

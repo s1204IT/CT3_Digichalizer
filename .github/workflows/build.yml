@@ -2,45 +2,44 @@ name: Build
 
 on:
   push:
-    paths:
-      - '.github/workflows/build.yml'
-      - 'app/**'
-      - 'gradle/**'
-      - '*.gradle'
-      - 'gradle.properties'
+    paths-ignore:
+      - '*.md'
+      - '*.txt'
   workflow_dispatch:
 
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '8'
+          java-version: '21'
 
-      - name: Cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches/
-            ~/.gradle/wrapper/
-          key: ${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Set environments
+        run: |
+          {
+            echo "version=v$(grep versionName app/build.gradle | awk '{print $2}' | tr -d \")"
+            echo "commit=$(echo ${{ github.sha }} | cut -c -7)"
+            echo "repo=$(echo ${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/})"
+          } >> $GITHUB_ENV
 
       - name: Build with Gradle
-        run: |
-          ./gradlew aR
-          echo "version=$(grep versionName app/build.gradle | awk '{print $2}' | tr -d \")" >> $GITHUB_ENV
-          echo "commit=$(echo ${{ github.sha }} | cut -c -7)" >> $GITHUB_ENV
+        run: ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: CT3_Digichalizer(v${{ env.version }}@${{ env.commit }})
-          path: app/build/outputs/apk/release/app-release*.apk
+          name: ${{ env.repo }}(${{ env.version }}@${{ env.commit }})
+          path: app/build/outputs/apk/debug/app-debug*.apk

@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="me.s1204.benesse.dcha.e"
-    android:sharedUserId="me.s1204.benesse.shared">
+    android:sharedUserId="me.s1204.benesse.shared"
+    android:sharedUserMaxSdkVersion="28">
 
-    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"
-        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="jp.co.benesse.dcha.permission.ACCESS_SYSTEM" />
 
     <application
+        android:description="@string/app_description"
         android:icon="@android:mipmap/sym_def_app_icon"
-        android:label="CT3 Digichalizer"
+        android:label="@string/app_name"
         android:theme="@android:style/Theme.NoDisplay">
 
         <activity
             android:name=".InitDcha"
+            android:description="@string/dcha_description"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:label="Digichalizing"
+            android:label="@string/dcha"
             android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,9 +28,10 @@
 
         <activity
             android:name=".BackNova"
+            android:description="@string/nova_description"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:label="Nova Launcher"
+            android:label="@string/nova_launcher"
             android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -41,15 +42,30 @@
 
         <activity
             android:name=".Reboot"
+            android:description="@string/reboot_description"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:label="Reboot"
+            android:label="@string/reboot"
             android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".AccessibilityService"
+            android:description="@string/service_description"
+            android:exported="true"
+            android:label="@string/service_name"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
 
     </application>
 

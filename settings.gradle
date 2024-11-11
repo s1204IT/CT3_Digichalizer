@@ -1,2 +1,18 @@
-rootProject.name = 'CT3_Digichalizer'
-include ':app'
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    plugins {
+        id 'com.android.application' version '8.7.2' apply false
+    }
+}
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = 'CT3-Digichalizer'
+include 'app'
