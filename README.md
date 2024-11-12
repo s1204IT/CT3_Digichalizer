@@ -17,7 +17,7 @@
 ### 最初の設定
 
 ユーザー補助を有効にしてください。  
-**Digichalizing** (**InitDcha**) を開くと、設定画面が立ち上がります。
+**Digichalize** (**InitDcha**) を開くと、設定画面が立ち上がります。
 
 ### Nova Launcher の起動
 
@@ -27,4 +27,4 @@
 ### 学習環境への戻り方
 
 **ホームボタン** と **音量＋ボタン** を同時押します。  
-もしくは、**Digichalizing** (**InitDcha**) を開きます。
+もしくは、**Digichalize** (**InitDcha**) を開きます。
